@@ -47,6 +47,8 @@ async def create_entry(request: Request, entry: dict, entry_service: EntryServic
 # Example response: [{"id": "123", "work": "...", "struggle": "...", "intention": "..."}]
 
 
+# TODO: Implement get all entries endpoint
+# Hint: Use PostgresDB and EntryService like other endpoints
 @router.get("/entries")
 async def get_all_entries(request: Request):
     async with PostgresDB() as db:
@@ -55,41 +57,42 @@ async def get_all_entries(request: Request):
         if not entries:
             raise HTTPException(status_code=404, detail="Entry not found")
     return entries
-    # TODO: Implement get all entries endpoint
-    # Hint: Use PostgresDB and EntryService like other endpoints
 
-
+# TODO: Implement get single entry endpoint
+# Hint: Return 404 if entry not found
 @router.get("/entries/{entry_id}")
 async def get_entry(request: Request, entry_id: str):
-    client_host = request.client_host
-    if (entry_id):
-        return {"client_host": client_host, "entry_id": entry_id}
-    return {"404: Entry not found"}
-    # TODO: Implement get single entry endpoint
-    # Hint: Return 404 if entry not found
-    pass
+    async with PostgresDB() as db:
+        entry_service = EntryService(db)
+        entry = await entry_service.get_entry(entry_id)
+        if not entry:
+            raise HTTPException(status_code=404, detail="Entry not found")
+        return entry
 
 
-@router.patch("/entries/{entry_id}")
+@router.put("/entries/{entry_id}")
 async def update_entry(request: Request, entry_id: str, entry_update: dict):
     async with PostgresDB() as db:
         entry_service = EntryService(db)
         result = await entry_service.update_entry(entry_id, entry_update)
     if not result:
-
         raise HTTPException(status_code=404, detail="Entry not found")
-
     return result
 
 # TODO: Implement DELETE /entries/{entry_id} endpoint to remove a specific entry
 # Return 404 if entry not found
 
-
+# TODO: Implement delete entry endpoint
+# Hint: Return 404 if entry not found
 @router.delete("/entries/{entry_id}")
 async def delete_entry(request: Request, entry_id: str):
-    # TODO: Implement delete entry endpoint
-    # Hint: Return 404 if entry not found
-    pass
+    del_entry_id = entry_id
+    async with PostgresDB() as db:
+        entry_service = EntryService(db)
+        if not entry_id:
+            raise HTTPException(status_code=404, detail="Entry not found")
+        await entry_service.delete_entry(entry_id)
+        return {"Entry deleted"}
 
 
 @router.delete("/entries")
@@ -100,3 +103,6 @@ async def delete_all_entries(request: Request):
         await entry_service.delete_all_entries()
 
     return {"detail": "All entries deleted"}
+
+
+journal_router = router
