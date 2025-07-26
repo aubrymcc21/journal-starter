@@ -2,22 +2,40 @@ name: CI/CD Pipeline
 
 on:
   push:
-    branches: [main]
+    branches: [ main ]
 
 jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
 
     steps:
-     - name: Checkout repo
-       uses: actions/checkout@v3
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
-     - name: Set up Python
-       uses: actions/setup-python@v4
-       with:
-         python-version: '3.11'
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
 
-     - name: Install dependencies
-       run: |
-         python -m pip install --upgrade pip
-         pip install -r requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r api/requirements.txt
+
+      - name: Run tests
+        run: pytest
+
+      - name: Build Docker image
+        run: docker build -t journal-app .
+
+      - name: Login to ACR
+        uses: azure/docker-login@v1
+        with:
+          login-server: ltcregistry.azurecr.io
+          username: ${{ secrets.LTCRegistry }}
+          password: ${{ secrets.ZvTBBzTK+tS8mYMQYi+7EHExx+rgYC8QF8pF6VuQl6+ACRAtO6VI }}
+
+      - name: Push image
+        run: docker push ltcregistry.azurecr.io/journal-app:latest
+
+      # TODO: Add deploy step here (e.g., Azure CLI, kubectl)

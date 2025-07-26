@@ -1,14 +1,14 @@
 .PHONY: help
-help:             ## Show the help.
+help:
 	@echo "Usage: make <target>"
 	@echo ""
 	@echo "Targets:"
 	@fgrep "##" Makefile | fgrep -v fgrep
 
 .PHONY: run
-run:             ## Show the help.
+run:
 	uvicorn api.main:app --reload --host 0.0.0.0 --port 8000
 
 .PHONY: install
-install:             ## Install the dependencies.
+install:
 	pip install -r api/requirements.txt
