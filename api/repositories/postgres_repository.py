@@ -36,17 +36,16 @@ class PostgresDB(DatabaseInterface):
     async def create_entry(self, entry_data: Dict[str, Any]) -> None:
         async with self.pool.acquire() as conn:
             query = """
-            INSERT INTO entries (id, data, created_at, updated_at)
+            INSERT INTO journal_entries (id, data, created_at, updated_at)
             VALUES ($1, $2, $3, $4)
             """
             entry_id = entry_data.get("id") or str(uuid.uuid4())
-            data_json = json.dumps(
-                entry_data, default=PostgresDB.datetime_serialize)
+            data_json = json.dumps(entry_data, default=PostgresDB.datetime_serialize)
             await conn.execute(query, entry_id, data_json, entry_data["created_at"], entry_data["updated_at"])
 
     async def get_entries(self) -> List[Dict[str, Any]]:
         async with self.pool.acquire() as conn:
-            query = "SELECT * FROM entries"
+            query = "SELECT * FROM journal_entries"
             rows = await conn.fetch(query)
             return [
                 {
@@ -58,7 +57,7 @@ class PostgresDB(DatabaseInterface):
 
     async def get_entry(self, entry_id: str) -> Dict[str, Any]:
         async with self.pool.acquire() as conn:
-            query = "SELECT * FROM entries WHERE id = $1"
+            query = "SELECT * FROM journal_entries WHERE id = '" + entry_id +"'"
             row = await conn.fetchrow(query, entry_id)
 
             if row:
@@ -77,7 +76,7 @@ class PostgresDB(DatabaseInterface):
 
         async with self.pool.acquire() as conn:
             query = """
-            UPDATE entries 
+            UPDATE journal_entries 
             SET data = $2, updated_at = $3
             WHERE id = $1
             """
@@ -85,10 +84,10 @@ class PostgresDB(DatabaseInterface):
 
     async def delete_entry(self, entry_id: str) -> None:
         async with self.pool.acquire() as conn:
-            query = "DELETE FROM entries WHERE id = $1"
+            query = "DELETE FROM journal_entries WHERE id = $1"
             await conn.execute(query, entry_id)
 
     async def delete_all_entries(self) -> None:
         async with self.pool.acquire() as conn:
-            query = "DELETE FROM entries"
+            query = "DELETE FROM journal_entries"
             await conn.execute(query)
