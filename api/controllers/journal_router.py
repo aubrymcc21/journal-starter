@@ -8,18 +8,15 @@ from api.services import EntryService
 
 router = APIRouter()
 
-# TODO: Add authentication middleware
-# TODO: Add request validation middleware
-# TODO: Add rate limiting middleware
-# TODO: Add API versioning
-# TODO: Add response caching
-
 
 async def get_entry_service() -> AsyncGenerator[EntryService, None]:
 
     async with PostgresDB() as db:
         yield EntryService(db)
 
+@router.get("/")
+def root():
+	return {"message": "API is working"}
 
 @router.post("/entries")
 async def create_entry(request: Request, entry: dict, entry_service: EntryService = Depends(get_entry_service)):
@@ -43,12 +40,7 @@ async def create_entry(request: Request, entry: dict, entry_service: EntryServic
             raise e
     return JSONResponse(content={"detail": "Entry created successfully"}, status_code=201)
 
-# TODO: Implement GET /entries endpoint to list all journal entries
-# Example response: [{"id": "123", "work": "...", "struggle": "...", "intention": "..."}]
 
-
-# TODO: Implement get all entries endpoint
-# Hint: Use PostgresDB and EntryService like other endpoints
 @router.get("/entries")
 async def get_all_entries(request: Request):
     async with PostgresDB() as db:
@@ -58,8 +50,7 @@ async def get_all_entries(request: Request):
             raise HTTPException(status_code=404, detail="Entry not found")
     return entries
 
-# TODO: Implement get single entry endpoint
-# Hint: Return 404 if entry not found
+  
 @router.get("/entries/{entry_id}")
 async def get_entry(request: Request, entry_id: str):
     async with PostgresDB() as db:
@@ -79,11 +70,7 @@ async def update_entry(request: Request, entry_id: str, entry_update: dict):
         raise HTTPException(status_code=404, detail="Entry not found")
     return result
 
-# TODO: Implement DELETE /entries/{entry_id} endpoint to remove a specific entry
-# Return 404 if entry not found
 
-# TODO: Implement delete entry endpoint
-# Hint: Return 404 if entry not found
 @router.delete("/entries/{entry_id}")
 async def delete_entry(request: Request, entry_id: str):
     del_entry_id = entry_id
@@ -92,7 +79,7 @@ async def delete_entry(request: Request, entry_id: str):
         if not entry_id:
             raise HTTPException(status_code=404, detail="Entry not found")
         await entry_service.delete_entry(entry_id)
-        return {"Entry deleted"}
+        return {"detail": "Entry deleted"}
 
 
 @router.delete("/entries")
@@ -103,6 +90,3 @@ async def delete_all_entries(request: Request):
         await entry_service.delete_all_entries()
 
     return {"detail": "All entries deleted"}
-
-
-journal_router = router
