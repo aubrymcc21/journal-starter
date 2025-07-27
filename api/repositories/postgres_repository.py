@@ -11,7 +11,7 @@ from api.repositories.interface_respository import DatabaseInterface
 load_dotenv()
 # print("ENV DEBUG:", dict(os.environ))
 
-# DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = os.getenv("DATABASE_URL")
 if not DATABASE_URL:
     print("Database URL variable: " + str(DATABASE_URL))
     raise ValueError("DATABASE_URL environment variable is missing")
@@ -39,7 +39,8 @@ class PostgresDB(DatabaseInterface):
             VALUES ($1, $2, $3, $4)
             """
             entry_id = entry_data.get("id") or str(uuid.uuid4())
-            data_json = json.dumps(entry_data, default=PostgresDB.datetime_serialize)
+            data_json = json.dumps(
+                entry_data, default=PostgresDB.datetime_serialize)
             await conn.execute(query, entry_id, data_json, entry_data["created_at"], entry_data["updated_at"])
 
     async def get_entries(self) -> List[Dict[str, Any]]:
@@ -56,7 +57,7 @@ class PostgresDB(DatabaseInterface):
 
     async def get_entry(self, entry_id: str) -> Dict[str, Any]:
         async with self.pool.acquire() as conn:
-            query = "SELECT * FROM journal_entries WHERE id = '" + entry_id +"'"
+            query = "SELECT * FROM journal_entries WHERE id = '" + entry_id + "'"
             row = await conn.fetchrow(query, entry_id)
 
             if row:
