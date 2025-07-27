@@ -47,6 +47,8 @@ class PostgresDB(DatabaseInterface):
         async with self.pool.acquire() as conn:
             query = "SELECT * FROM journal_entries"
             rows = await conn.fetch(query)
+            if not rows:
+                return { "result": "No entries currently exist" }
             return [
                 {
                     **dict(row),
