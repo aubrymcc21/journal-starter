@@ -6,3 +6,4 @@ sqlalchemy
 psycopg2-binary
 asyncpg
 pytest
+prometheus_client
