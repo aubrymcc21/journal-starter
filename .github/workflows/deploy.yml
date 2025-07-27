@@ -1,4 +1,4 @@
-name: CI/CD Pipeline
+name: CI/CD Pipeline - build + push to Azure Container Registry
 
 on:
   push:
@@ -25,17 +25,20 @@ jobs:
       - name: Run tests
         run: pytest
 
-      - name: Build Docker image
-        run: docker build -t journal-app .
+      - name: Login to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Login to ACR
         uses: azure/docker-login@v1
         with:
           login-server: ltcregistry.azurecr.io
-          username: ${{ secrets.LTCRegistry }}
-          password: ${{ secrets.ZvTBBzTK+tS8mYMQYi+7EHExx+rgYC8QF8pF6VuQl6+ACRAtO6VI }}
+          username: ${{ secrets.ACR_USERNAME }}
+          password: ${{ secrets.ACR_PASSWORD }}
+
+      - name: Build Docker image
+        run: docker build -t ltcregistry.azurecr.io/journal-app:latest .
 
       - name: Push image
         run: docker push ltcregistry.azurecr.io/journal-app:latest
-
-      # TODO: Add deploy step here (e.g., Azure CLI, kubectl)
