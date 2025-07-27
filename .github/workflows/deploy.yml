@@ -23,6 +23,8 @@ jobs:
           pip install -r api/requirements.txt
 
       - name: Run tests
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: pytest api/tests
 
       - name: Login to Azure
