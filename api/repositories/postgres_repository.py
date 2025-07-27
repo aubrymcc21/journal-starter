@@ -13,7 +13,6 @@ load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 if not DATABASE_URL:
-    print("Database URL variable: " + str(DATABASE_URL))
     raise ValueError("DATABASE_URL environment variable is missing")
 
 
