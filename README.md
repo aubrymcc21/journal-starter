@@ -11,13 +11,13 @@ A journaling FastAPI web app deployed with Docker and monitored using Prometheus
 
 ## Project Structure
 
-├── Dockerfile*
-├── Makefile*
-├── README.md*
-├── api/
-│   ├── __init__.py*
-│   ├── __pycache__/
-│   │   ├── __init__.cpython-312.pyc
+Dockerfile*
+Makefile*
+README.md*
+/api/
+  __init__.py*
+  __pycache__/
+    __init__.cpython-312.pyc
 │   │   └── main.cpython-312.pyc
 │   ├── controllers/
 │   │   ├── __init__.py*
