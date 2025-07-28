@@ -41,7 +41,7 @@ docker-compose up --build
 ```bash
 kubectl apply -f k8s/
 
-## ✅ 6. **Monitoring Dashboards**
+## 6. **Monitoring Dashboards**
 
 ```markdown
 ### Monitoring with Grafana
