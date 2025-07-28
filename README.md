@@ -23,8 +23,6 @@ docker-compose up --build
 - Prometheus: http://localhost:9090
 - Grafana: http://localhost:3000
 
-## 4. **CI/CD Pipeline**
-
 ## CI/CD Pipeline
 
 - On push to `main`, GitHub Actions:
@@ -41,7 +39,7 @@ docker-compose up --build
 ```bash
 kubectl apply -f k8s/
 ```
-## 6. **Monitoring Dashboards**
+## **Monitoring Dashboards**
 
 ### Monitoring with Grafana
 
