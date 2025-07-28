@@ -16,6 +16,7 @@ A journaling FastAPI web app deployed with Docker and monitored using Prometheus
 
 ```bash
 docker-compose up --build
+```
 
 3. Visit:
 - FastAPI: http://localhost:8000/docs
@@ -24,7 +25,6 @@ docker-compose up --build
 
 ## 4. **CI/CD Pipeline**
 
-```markdown
 ## CI/CD Pipeline
 
 - On push to `main`, GitHub Actions:
@@ -40,10 +40,9 @@ docker-compose up --build
 
 ```bash
 kubectl apply -f k8s/
-
+```
 ## 6. **Monitoring Dashboards**
 
-```markdown
 ### Monitoring with Grafana
 
 - Prometheus scrapes `/metrics` from FastAPI every 15s.
