@@ -8,9 +8,6 @@ A journaling FastAPI web app deployed with Docker and monitored using Prometheus
 - **CI/CD**: GitHub Actions
 - **Monitoring**: Prometheus + Grafana
 
-
-## Project Structure
-
 ## Running Locally
 
 1. Create a `.env` file in the root to store the DATABASE_URL variable. It will look something like postgresql://youruser:yourpass@yourhost:5432/yourdb.
