@@ -9,9 +9,9 @@ from dotenv import load_dotenv
 from api.repositories.interface_respository import DatabaseInterface
 
 load_dotenv()
-# print("ENV DEBUG:", dict(os.environ))
 
 DATABASE_URL = os.getenv("DATABASE_URL")
+
 if not DATABASE_URL:
     raise ValueError("DATABASE_URL environment variable is missing")
 
