@@ -11,18 +11,56 @@ A journaling FastAPI web app deployed with Docker and monitored using Prometheus
 
 ## Project Structure
 
-journal-starter/
-├── api/ # FastAPI app
-│ ├── main.py
-│ └── requirements.txt
-├── monitoring/ # Prometheus config
-│ └── prometheus.yml
-├── .env # Environment variables (not checked in)
-├── Dockerfile # FastAPI Docker image
-├── docker-compose.yml # Local services
-├── infra/ # Terraform configs
-├── .github/workflows/ # GitHub Actions CI/CD
-└── README.md
+├── Dockerfile*
+├── Makefile*
+├── README.md*
+├── api/
+│   ├── __init__.py*
+│   ├── __pycache__/
+│   │   ├── __init__.cpython-312.pyc
+│   │   └── main.cpython-312.pyc
+│   ├── controllers/
+│   │   ├── __init__.py*
+│   │   ├── __pycache__/
+│   │   │   ├── __init__.cpython-312.pyc
+│   │   │   └── journal_router.cpython-312.pyc
+│   │   └── journal_router.py*
+│   ├── main.py*
+│   ├── models/
+│   │   ├── __init__.py*
+│   │   ├── __pycache__/
+│   │   │   ├── __init__.cpython-312.pyc
+│   │   │   └── entry.cpython-312.pyc
+│   │   └── entry.py*
+│   ├── repositories/
+│   │   ├── __init__.py*
+│   │   ├── __pycache__/
+│   │   │   ├── __init__.cpython-312.pyc
+│   │   │   ├── interface_respository.cpython-312.pyc
+│   │   │   └── postgres_repository.cpython-312.pyc
+│   │   ├── interface_respository.py*
+│   │   └── postgres_repository.py*
+│   ├── requirements.txt*
+│   ├── services/
+│   │   ├── __init__.py*
+│   │   ├── __pycache__/
+│   │   │   ├── __init__.cpython-312.pyc
+│   │   │   └── entry_service.cpython-312.pyc
+│   │   └── entry_service.py*
+│   ├── tests/
+│   │   └── test_get_entries.py*
+│   └── utils.py*
+├── docker-compose.yml*
+├── infra/
+│   ├── main.tf*
+│   └── terraform.tfstate*
+├── k8s/
+│   ├── deployment.yaml*
+│   └── service.yaml*
+├── monitoring/
+│   └── prometheus.yml*
+├── myapp.log
+└── prometheus.yml/
 
 
 ## Running Locally
