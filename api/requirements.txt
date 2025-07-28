@@ -6,4 +6,5 @@ sqlalchemy
 psycopg2-binary
 asyncpg
 pytest
-prometheus_client
+prometheus-client
+prometheus-fastapi-instrumentator
